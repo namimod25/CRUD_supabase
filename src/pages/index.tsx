@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/lib/db';
 import type { IMenu } from '@/types/menu';
 import Image from 'next/image';
+import Link from 'next/link';
 import {useEffect, useState} from 'react'
 
 const Home = () => {                                        //FETCH Data supabase
@@ -36,7 +37,7 @@ const Home = () => {                                        //FETCH Data supabas
                 <p className='font-semibold text-2xl'>Rp.{menu.price},00</p>
               </div>
             </CardContent>
-            <Button className='w-full font-bold' size={'lg'}>Detail</Button>
+            <Link href={`/menu/@{menu.id}`} className='w-full'><Button className='w-full font-bold' size={'lg'}>Detail</Button></Link>
           </Card>
         ))}
       </div>
