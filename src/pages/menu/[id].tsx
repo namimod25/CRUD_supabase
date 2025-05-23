@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/db";
 import { IMenu } from "@/types/menu";
-import { error } from "console";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
 
 
 const DetailMenu = () => {
@@ -15,19 +13,10 @@ const DetailMenu = () => {
     useEffect(() => {
         if(router.query.id) {
             const fetchMenu = async () => {
-                const {data, error} = await supabase
-                .from('List_makanan')
-                .select('*')
-                .eq('id', router.query.id)
-                .single();
-
-            if(error) console.log('error:', error);
-            else setMenu(data);
-            };
-
-            fetchMenu();
+                const {data, error,} = await supabase.from('List_makanan').select('*').eq('id', router.query.id);
+            }
         }
-    }, [router.query.id]);
+    })
         
     return(
         <div className="container mx-auto py-8">
