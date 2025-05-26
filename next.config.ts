@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
-    domains: ["images.encrypted-tbn0.gstatic.com, images.asset.kompas.com", "images.w7.pngwing.com"],
+    domains: ["drive.google.com"]
   }
 };
 

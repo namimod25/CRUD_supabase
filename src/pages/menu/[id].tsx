@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const DetailMenu = () => {
     const router = useRouter();
-    const [Menu, setMenu] = useState<IMenu | null>(null);
+    const [Menu, setMenus] = useState<IMenu | null>(null);
 
     useEffect(() => {
         if(router.query.id) {
