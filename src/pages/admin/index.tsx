@@ -18,6 +18,10 @@ import { toast } from "sonner";
 const AdminPage = () => {
     const [Menu, setMenu] = useState<IMenu[]>([]);
     const [createDialog, setCreateDialog] = useState(false);
+    const [selectedMenu, setSelectedMenu] = useState<{
+        menu: IMenu;
+        action: 'edit' | 'delete';
+    } | null>(null);
 
   useEffect (() =>{
     const fetchMenu = async () => {
@@ -51,6 +55,27 @@ const AdminPage = () => {
             console.log('error', error);
         }
     };
+
+    const handleDeleteMenu = async () =>{
+        if(selectedMenu){
+            try {
+                const {data, error} = await supabase
+                .from('List_makanan')
+                .delete()
+                .eq('id', selectedMenu?.menu.id)
+    
+                if (error)console.log('error:', error);
+                else{
+                    setMenu((prev) => prev.filter((Menu)=> Menu.id !== selectedMenu?.menu.id))
+                    toast('Menu berhasil dihapus');
+                    setSelectedMenu(null);
+                }
+            }catch (error) {
+                console.log('error', error);
+            }
+        }
+    }
+
 
     return (
         <div className="container mx-auto py-8">
@@ -123,8 +148,8 @@ const AdminPage = () => {
                         </form>
                     </DialogContent>
                 </Dialog>
-            
             </div>
+            <div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -160,7 +185,8 @@ const AdminPage = () => {
                                 <DropdownMenuSeparator/>
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem>Update</DropdownMenuItem>
-                                    <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={()=> setSelectedMenu({menu, action: 'delete'})} className="text-red-600">
+                                        Delete</DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -170,8 +196,41 @@ const AdminPage = () => {
                     ))}
                 </TableBody>
             </Table>
+            </div>
+            <Dialog open={selectedMenu !== null && selectedMenu.action === 'delete'}
+            onOpenChange={(open) => {
+                if (!open){
+                    setSelectedMenu(null);
+                }
+            }}
+                >
+                    <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                                <DialogTitle>Delete Menu</DialogTitle>
+                                <DialogDescription className="cursor-pointer">
+                                    Apakah kamu yakin menghapus nya ? {selectedMenu?.menu.name}?
+                                </DialogDescription>
+                            </DialogHeader>
+                           
+                            
+                            <div className="grid w-full gap-4">
+                                <div className="grid w-full items-center gap-2">
+                            <DialogFooter>
+                            <DialogClose>
+                            <Button variant="secondary" className="cursor-pointer">
+                                Cancel
+                            </Button>
+                            </DialogClose>
+                            <Button onClick={handleDeleteMenu} variant={'destructive'} className="cursor-pointer">
+                                Delete
+                            </Button>
+                        </DialogFooter>
+                            </div>
+                            </div>
+                    </DialogContent>
+                </Dialog>
         </div>
 
-    )
-}
+    );
+};
 export default AdminPage;
