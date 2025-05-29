@@ -56,6 +56,28 @@ const AdminPage = () => {
         }
     };
 
+    const handleUpdateMenu = async (event: FormEvent<HTMLFormElement>) =>{
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        if(selectedMenu){
+            const {data, error} = await supabase
+            .from('List_makanan')
+            .update(Object.fromEntries(formData))
+            .eq('id', selectedMenu.menu.id)
+            .select();
+
+            if(error) console.log('error', error);
+            else{
+                if(data){
+                    setMenu((prev)=> prev.map((item)=> item.id === selectedMenu.menu.id? {...item, ...data}: item)
+                )
+            };
+        }
+        toast('Menu Berhasil Di Update');
+        setSelectedMenu(null);
+    }
+}
+
     const handleDeleteMenu = async () =>{
         if(selectedMenu){
             try {
@@ -184,7 +206,9 @@ const AdminPage = () => {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator/>
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>Update</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={()=>setSelectedMenu({menu, action: "edit"})}
+                                    >Update</DropdownMenuItem>
+
                                     <DropdownMenuItem onClick={()=> setSelectedMenu({menu, action: 'delete'})} className="text-red-600">
                                         Delete</DropdownMenuItem>
                                 </DropdownMenuGroup>
@@ -229,6 +253,73 @@ const AdminPage = () => {
                             </div>
                     </DialogContent>
                 </Dialog>
+                <Dialog open={selectedMenu !== null && selectedMenu.action === 'edit'} onOpenChange={(open) => {
+                if (!open) {
+                    setSelectedMenu(null);
+                }
+            }}>
+                <DialogContent className="sm:max-w-md">
+                    <form onSubmit={handleUpdateMenu} className="space-y-4">
+                        <DialogHeader>
+                            <DialogTitle>Update Menu</DialogTitle>
+                            <DialogDescription>
+                                Update the menu by editing the form
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid w-full gap-4">
+                            <div className="grid w-full gap-2">
+                                <Label htmlFor="name">Name</Label>
+                                <Input id="name" name="name" defaultValue={selectedMenu?.menu.name} placeholder="masukan nama" required />
+                            </div>
+                        </div>
+                        <div className="grid w-full gap-4">
+                            <div className="grid w-full items-center gap-2">
+                                <Label htmlFor="price">Price</Label>
+                                <Input id="price" name="price" defaultValue={selectedMenu?.menu.price} placeholder="masukan harga" required />
+                            </div>
+                        </div>
+                        <div className="grid w-full gap-4">
+                            <div className="grid w-full items-center gap-2">
+                                <Label htmlFor="image">Insert Image</Label>
+                                <Input id="images" name="image" defaultValue={selectedMenu?.menu.image} placeholder="masukan gambar" required />
+                            </div>
+                        </div>
+                        <div className="grid w-full gap-4">
+                            <div className="grid w-full items-center gap-2">
+                                <Label htmlFor="categori">Category</Label>
+                                <Select name="categori" defaultValue={selectedMenu?.menu.categori} required>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="select category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>category</SelectLabel>
+                                            <SelectItem value="classic">classic</SelectItem>
+                                            <SelectItem value="modern">modern</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                        <div className="grid w-full gap-4">
+                            <div className="grid w-full items-center gap-2">
+                                <Label htmlFor="description">Insert Description</Label>
+                                <Textarea id="description" name="description" defaultValue={selectedMenu?.menu.description} placeholder="masukan description" required className="resize-none h-32" />
+                            </div>
+                        </div>
+                        <DialogFooter>
+                            <DialogClose>
+                                <Button variant="secondary" className="cursor-pointer">
+                                    Cancel
+                                </Button>
+                            </DialogClose>
+                            <Button type="submit" className="cursor-pointer">
+                                Update
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
         </div>
 
     );
