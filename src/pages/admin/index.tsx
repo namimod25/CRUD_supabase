@@ -73,7 +73,7 @@ const AdminPage = () => {
                 )
             };
         }
-        toast('Menu Berhasil Di Update');
+        toast('Menu Berhasil Di Edit');
         setSelectedMenu(null);
     }
 }
