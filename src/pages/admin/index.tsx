@@ -185,7 +185,7 @@ const AdminPage = () => {
                     {Menu.map((menu: IMenu) =>(
                     <TableRow key={menu.id}>
                         <TableCell className="flex gap-3 items-center w-full">
-                            <Image width={50} height={50} src={menu.image} alt={menu.name}
+                            <Image width={50} height={50} src={menu.imagePath} alt={menu.name}
                             className="aspect-square object-cover rounded-lg"
                             />
                             {menu.name}
@@ -207,7 +207,7 @@ const AdminPage = () => {
                                 <DropdownMenuSeparator/>
                                 <DropdownMenuGroup>
                                     <DropdownMenuItem onClick={()=>setSelectedMenu({menu, action: "edit"})}
-                                    >Update</DropdownMenuItem>
+                                    >Edit</DropdownMenuItem>
 
                                     <DropdownMenuItem onClick={()=> setSelectedMenu({menu, action: 'delete'})} className="text-red-600">
                                         Delete</DropdownMenuItem>
@@ -281,7 +281,7 @@ const AdminPage = () => {
                         <div className="grid w-full gap-4">
                             <div className="grid w-full items-center gap-2">
                                 <Label htmlFor="image">Insert Image</Label>
-                                <Input id="images" name="image" defaultValue={selectedMenu?.menu.image} placeholder="masukan gambar" required />
+                                <Input id="images" name="image" defaultValue={selectedMenu?.menu.imagePath} placeholder="masukan gambar" required />
                             </div>
                         </div>
                         <div className="grid w-full gap-4">

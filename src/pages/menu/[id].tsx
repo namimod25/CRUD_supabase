@@ -24,7 +24,7 @@ const DetailMenu = () => {
                 {Menu &&(
                     <div className="flex gap-16 items-center">
                         <div className="w-1/2">
-                        <Image src={Menu.image} alt={Menu.name} width={360} height={1080} className="w-full h-[70vh] object-cover rounded-2xl"
+                        <Image src={Menu.imagePath} alt={Menu.name} width={360} height={1080} className="w-full h-[70vh] object-cover rounded-2xl"
                         />
                         </div>
                         <div className="w-1/2">

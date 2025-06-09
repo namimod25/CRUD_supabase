@@ -5,7 +5,7 @@ interface IMenu {
     name: string;
     description: string;
     price: number;
-    categori: string;
-    image: string;
+  categori: string;
+  imagePath: string; // image path from DB, default can be handled in the component
 }
 export type {IMenu};

@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/lib/db';
 import type { IMenu } from '@/types/menu';
 import Image from 'next/image';
+
 import Link from 'next/link';
 import {useEffect, useState} from 'react'
 
@@ -27,7 +28,7 @@ const Home = () => {                                        //FETCH Data supabas
         {Menu.map((menu: IMenu)=>(
           <Card key={menu.id}>
             <CardContent>
-              <Image src={menu.image} alt={menu.name} width={200} height={200} className='w-full h-[30vh] object-cover rounded-lg'/>
+              <Image src={menu.imagePath} alt={menu.name} width={500} height={300} className='w-full h-[30vh] object-cover rounded-lg'/>
 
               <div className='mt-4 flex justify-between'>
                 <div>
